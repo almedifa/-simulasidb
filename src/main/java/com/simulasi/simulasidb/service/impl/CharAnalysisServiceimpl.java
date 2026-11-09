@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.time.LocalDateTime;
 
 @Service
@@ -29,6 +30,12 @@ public class CharAnalysisServiceimpl implements CharAnalysisService {
 
         CharAnalysis tersimpan = charAnalysisRepository.save(data);
         return CharAnalysisResponse.from(tersimpan, counter.toMap());
+    }
+
+    @Override
+    public Optional<CharAnalysisResponse> cariById(Long id) {
+        return charAnalysisRepository.findById(id)
+                .map(data -> toResponse(data));
     }
 
     @Override

@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -35,6 +37,15 @@ public class AnalyzerController {
             @RequestHeader(value = "X-Request-Id", required = false) String requestId) {
         System.out.println("X-Request-Id: " + requestId + ", kalimat: " + request.getKalimat());
         return BaseResponse.ok(charAnalysisService.simpan(request));
+    }
+
+    @GetMapping("/v1/{id}")
+    public BaseResponse<CharAnalysisResponse> cariById(@PathVariable Long id) {
+        Optional<CharAnalysisResponse> hasil = charAnalysisService.cariById(id);
+        if (hasil.isPresent()) {
+            return BaseResponse.ok(hasil.get());
+        }
+        return BaseResponse.error("Data dengan id " + id + " tidak ditemukan");
     }
 
 }
