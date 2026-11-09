@@ -1,6 +1,7 @@
 package com.simulasi.simulasidb.service.impl;
 
 import com.simulasi.simulasidb.dto.response.CharAnalysisResponse;
+import com.simulasi.simulasidb.dto.request.CharAnalysisRequest;
 import com.simulasi.simulasidb.entity.CharAnalysis;
 import com.simulasi.simulasidb.repository.CharAnalysisRepository;
 import com.simulasi.simulasidb.service.CharAnalysisService;
@@ -11,11 +12,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class CharAnalysisServiceimpl implements CharAnalysisService {
     private final CharAnalysisRepository charAnalysisRepository;
+
+    @Override
+    public CharAnalysisResponse simpan(CharAnalysisRequest request) {
+        CharCounter counter = new CharCounter(request.getKalimat());
+        CharAnalysis data = new CharAnalysis();
+        data.setKalimat(request.getKalimat());
+        data.setTotalHuruf(counter.getTotalHuruf());
+        data.setCreatedAT(LocalDateTime.now());
+
+        CharAnalysis tersimpan = charAnalysisRepository.save(data);
+        return CharAnalysisResponse.from(tersimpan, counter.toMap());
+    }
 
     @Override
     public List<CharAnalysisResponse> cari(String kata) {

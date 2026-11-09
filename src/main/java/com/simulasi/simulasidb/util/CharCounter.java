@@ -10,7 +10,7 @@ public class CharCounter {
     public CharCounter(String kalimat){
         this.kalimat  = kalimat;
         for (char c : kalimat.toLowerCase().toCharArray()){
-            if (c < 'a' || c > '2') continue;
+            if (c < 'a' || c > 'z') continue;
                 freq[c-'a']++;
         }
     }
