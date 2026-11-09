@@ -48,4 +48,14 @@ public class AnalyzerController {
         return BaseResponse.error("Data dengan id " + id + " tidak ditemukan");
     }
 
+    @GetMapping("/v1/minimal")
+    public BaseResponse<List<CharAnalysisResponse>> minimal(@RequestParam int min) {
+        return BaseResponse.ok(charAnalysisService.minimal(min));
+    }
+
+    @GetMapping("/v1/terbaru")
+    public BaseResponse<List<CharAnalysisResponse>> terbaru() {
+        return BaseResponse.ok(charAnalysisService.terbaru());
+    }
+
 }

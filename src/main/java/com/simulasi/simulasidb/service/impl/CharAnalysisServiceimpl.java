@@ -39,6 +39,20 @@ public class CharAnalysisServiceimpl implements CharAnalysisService {
     }
 
     @Override
+    public List<CharAnalysisResponse> minimal(int min) {
+        return charAnalysisRepository.findWithMinimumTotalHuruf(min).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
+    public List<CharAnalysisResponse> terbaru() {
+        return charAnalysisRepository.findLatestFive().stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
     public List<CharAnalysisResponse> cari(String kata) {
         List<CharAnalysis> semua;
         if (kata == null || kata.isBlank()){

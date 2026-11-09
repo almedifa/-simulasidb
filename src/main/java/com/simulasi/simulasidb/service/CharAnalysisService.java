@@ -11,4 +11,6 @@ public interface CharAnalysisService {
     List<CharAnalysisResponse> cari(String kata);
     CharAnalysisResponse simpan(CharAnalysisRequest request);
     Optional<CharAnalysisResponse> cariById(Long id);
+    List<CharAnalysisResponse> minimal(int min);
+    List<CharAnalysisResponse> terbaru();
 }
