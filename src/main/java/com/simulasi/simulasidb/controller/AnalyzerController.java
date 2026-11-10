@@ -5,6 +5,7 @@ import com.simulasi.simulasidb.dto.response.CharAnalysisResponse;
 import com.simulasi.simulasidb.dto.request.CharAnalysisRequest;
 import com.simulasi.simulasidb.entity.CharAnalysis;
 import com.simulasi.simulasidb.service.CharAnalysisService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class AnalyzerController {
 
     @PostMapping("/v1")
     public BaseResponse<CharAnalysisResponse> simpan(
+            @Valid
             @RequestBody CharAnalysisRequest request,
             @RequestHeader(value = "X-Request-Id", required = false) String requestId) {
         System.out.println("X-Request-Id: " + requestId + ", kalimat: " + request.getKalimat());
@@ -41,11 +43,8 @@ public class AnalyzerController {
 
     @GetMapping("/v1/{id}")
     public BaseResponse<CharAnalysisResponse> cariById(@PathVariable Long id) {
-        Optional<CharAnalysisResponse> hasil = charAnalysisService.cariById(id);
-        if (hasil.isPresent()) {
-            return BaseResponse.ok(hasil.get());
-        }
-        return BaseResponse.error("Data dengan id " + id + " tidak ditemukan");
+        CharAnalysisResponse hasil = charAnalysisService.cariById(id);
+        return BaseResponse.ok(charAnalysisService.cariById(id));
     }
 
     @GetMapping("/v1/minimal")
@@ -58,4 +57,13 @@ public class AnalyzerController {
         return BaseResponse.ok(charAnalysisService.terbaru());
     }
 
+    @PostMapping("/from-quote")
+    public BaseResponse<CharAnalysisResponse> fromQuote(){
+        return BaseResponse.ok(charAnalysisService.analisisDariQuote());
+    }
+
+    @PostMapping("/v1/from-quote/{id}")
+    public BaseResponse<CharAnalysisResponse> fromQuoteById(@PathVariable Long id) {
+        return BaseResponse.ok(charAnalysisService.analisisDariQuote(id));
+    }
 }
